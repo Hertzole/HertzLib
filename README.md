@@ -14,4 +14,4 @@ See the [wiki](https://github.com/Hertzole/HertzLib/wiki) for explanation about 
 - Update manager
 
 ## License
-Do whatever you want with it. I'm not responable for any damages and all that. See [license](https://github.com/Hertzole/HertzLib/blob/master/LICENSE) for full explanation.
+Do whatever you want with it. I'm not responsable for any damages and all that. See [license](https://github.com/Hertzole/HertzLib/blob/master/LICENSE) for full explanation.
