@@ -24,7 +24,7 @@ namespace Hertzole.HertzLib
         [Tooltip("If true, the object will persist between scenes.")]
         private bool m_Persist = true;
 
-        /// <summary>If true, the object will persist between scenes.</summary>
+        /// <summary> If true, the object will persist between scenes. </summary>
         public bool Persist { get { return m_Persist; } set { m_Persist = value; } }
 
         private static UpdateManager instance;
@@ -63,7 +63,7 @@ namespace Hertzole.HertzLib
         private void Awake()
         {
             if (m_Persist)
-                DontDestroyOnLoad(this.gameObject);
+                DontDestroyOnLoad(gameObject);
         }
 
         private void OnDestroy()

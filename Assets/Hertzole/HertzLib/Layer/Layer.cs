@@ -9,7 +9,7 @@ namespace Hertzole.HertzLib
     /// Class for layer selection in the editor.
     /// </summary>
     [System.Serializable]
-    public class Layer
+    public struct Layer
     {
         [SerializeField]
         private int m_LayerID;
@@ -49,7 +49,7 @@ namespace Hertzole.HertzLib
         {
             try
             {
-                return (bool)(this == (Layer)obj);
+                return this == (Layer)obj;
             }
             catch
             {

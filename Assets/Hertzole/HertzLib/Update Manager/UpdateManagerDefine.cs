@@ -4,12 +4,12 @@ using UnityEditor;
 namespace Hertzole.HertzLib.Editor
 {
     [InitializeOnLoad]
-    public static class GoldPlayerInteractionDefine
+    public static class UpdateManagerDefine
     {
         private const string DEFINE = "HERTZLIB_UPDATE_MANAGER";
 
         // When a script reload happens, add the required definition to the project.
-        static GoldPlayerInteractionDefine()
+        static UpdateManagerDefine()
         {
             string scriptDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             if (!scriptDefines.Contains(DEFINE))
