@@ -1,6 +1,7 @@
 using Hertzole.HertzLib;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 
 namespace Hertzole.Hertzlib.Tests
@@ -10,6 +11,9 @@ namespace Hertzole.Hertzlib.Tests
         public string testString = "Test";
         [SerializeField]
         private string m_PrivateString;
+
+        private float testFloat;
+        private int testInt;
 
         private string evenMorePrivateString;
 
@@ -22,20 +26,23 @@ namespace Hertzole.Hertzlib.Tests
         [SerializeField]
         private SceneObject m_GameScene;
 
+        int[] numbers = new int[6] { 0, 1, 2, 3, 4, 5 };
+        List<int> numberList = new List<int>(6) { 0, 1, 2, 3, 4, 5 };
+
         private void Start()
         {
-            int[] numbers = new int[6] { 0, 1, 2, 3, 4, 5 };
+            Profiler.BeginSample("Array for each");
             numbers.ForEach(x =>
             {
                 // x is the array item.
-                Debug.Log(x);
             });
+            Profiler.EndSample();
 
-            List<int> numberList = new List<int>(6) { 0, 1, 2, 3, 4, 5 };
+            Profiler.BeginSample("List for each");
             numberList.ForEach(x =>
             {
-
             });
+            Profiler.EndSample();
 
             Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             Vector2Int tilePosition = mousePosition.ToInt();
@@ -47,12 +54,36 @@ namespace Hertzole.Hertzlib.Tests
                 return;
 
 
+            if (randomFloat == 1f)
+            {
+
+            }
+
             if (randomInt == 3)
             {
 
             }
 
-            SceneManager.LoadScene(m_GameScene);
+            if (randomFloat == testFloat)
+            {
+
+            }
+
+            if (randomInt == testInt)
+            {
+
+            }
+
+            Vector3 normalFloatMultiply = Vector3.one * testFloat;
+            Vector3 normalFloatMultiplyInverse = testFloat * Vector3.one;
+            Vector3 randomFloatMultiply = Vector3.one * randomFloat;
+            Vector3 randomFloatMultiplyInverse = randomFloat * Vector3.one;
+
+            Vector3Int normalIntMultiply = Vector3Int.one * testInt;
+            Vector3Int randomIntMultiply = Vector3Int.one * testInt;
+
+            if (false)
+                SceneManager.LoadScene(m_GameScene);
         }
     }
 }

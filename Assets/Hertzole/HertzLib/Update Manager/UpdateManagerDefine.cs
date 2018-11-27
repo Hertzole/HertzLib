@@ -1,10 +1,11 @@
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine;
 
 namespace Hertzole.HertzLib.Editor
 {
     [InitializeOnLoad]
-    public static class UpdateManagerDefine
+    internal static class UpdateManagerDefine
     {
         private const string DEFINE = "HERTZLIB_UPDATE_MANAGER";
 
@@ -18,6 +19,8 @@ namespace Hertzole.HertzLib.Editor
                 if (!scriptDefines.EndsWith(";"))
                     toAdd += ";";
                 toAdd += DEFINE;
+
+                Debug.Log("Added '" + DEFINE + "' define");
 
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, toAdd);
             }

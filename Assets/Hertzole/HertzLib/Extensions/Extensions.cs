@@ -104,7 +104,7 @@ namespace Hertzole.HertzLib
         /// </summary>
         public static float ParseFloat(this string s)
         {
-#if NET_4_6
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             if (string.IsNullOrWhiteSpace(s))
                 s = "0";
 #else
@@ -113,10 +113,7 @@ namespace Hertzole.HertzLib
 #endif
 
             float val;
-            if (s.TryFloatParse(out val))
-                return val;
-            else
-                return 0;
+            return s.TryFloatParse(out val) ? val : 0;
         }
 
         /// <summary>
@@ -132,7 +129,7 @@ namespace Hertzole.HertzLib
         /// </summary>
         public static int ParseInt(this string s)
         {
-#if NET_4_6
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             if (string.IsNullOrWhiteSpace(s))
                 s = "0";
 #else
@@ -141,10 +138,7 @@ namespace Hertzole.HertzLib
 #endif
 
             int val;
-            if (s.TryIntParse(out val))
-                return val;
-            else
-                return 0;
+            return s.TryIntParse(out val) ? val : 0;
         }
 
         /// <summary>
