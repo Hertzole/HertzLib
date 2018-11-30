@@ -74,6 +74,9 @@ namespace Hertzole.Hertzlib.Tests
 
             }
 
+            testInt = randomInt;
+            testFloat = randomFloat;
+
             Vector3 normalFloatMultiply = Vector3.one * testFloat;
             Vector3 normalFloatMultiplyInverse = testFloat * Vector3.one;
             Vector3 randomFloatMultiply = Vector3.one * randomFloat;

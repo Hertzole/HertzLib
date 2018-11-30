@@ -23,6 +23,11 @@ namespace Hertzole.HertzLib
             m_Max = max;
         }
 
+        public static implicit operator float(RandomFloat x)
+        {
+            return x.Value;
+        }
+
         public static bool operator ==(float x, RandomFloat y)
         {
             return x == y.Value;
