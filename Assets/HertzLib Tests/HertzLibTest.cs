@@ -87,6 +87,18 @@ namespace Hertzole.Hertzlib.Tests
 
             if (false)
                 SceneManager.LoadScene(m_GameScene);
+
+            DelayedActions.ScheduleAction(() =>
+            {
+                Debug.Log("Delayed action after two seconds!");
+            }, 2);
+
+            DelayedActions.ScheduleAction(DelayedFunction, 5);
+        }
+
+        private void DelayedFunction()
+        {
+            Debug.Log("Hello world... after 5 seconds of wait!");
         }
     }
 }

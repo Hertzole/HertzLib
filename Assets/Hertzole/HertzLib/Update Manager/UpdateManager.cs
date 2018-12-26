@@ -18,6 +18,7 @@ namespace Hertzole.HertzLib
         void OnLateUpdate();
     }
 
+    [DisallowMultipleComponent]
     [HelpURL("https://github.com/Hertzole/HertzLib/wiki/Update-Manager")]
     public class UpdateManager : MonoBehaviour
     {
