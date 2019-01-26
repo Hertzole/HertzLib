@@ -169,7 +169,7 @@ namespace Hertzole.HertzLib
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (m_Selectable.interactable || (!m_Selectable.interactable && m_PlayExitWhenDisabled))
+            if (m_Selectable.interactable || m_PlayExitWhenDisabled)
             {
                 PlaySound(m_ExitSound);
             }
@@ -177,7 +177,7 @@ namespace Hertzole.HertzLib
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (m_Selectable.interactable || (!m_Selectable.interactable && m_PlayEnterWhenDisabled))
+            if (m_Selectable.interactable || m_PlayEnterWhenDisabled)
             {
                 PlaySound(m_EnterSound);
             }

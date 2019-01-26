@@ -18,11 +18,13 @@ namespace Hertzole.HertzLib
             {
                 public float time;
                 public Action action;
+                public bool unscaledTime;
 
-                public ActionInfo(float time, Action action)
+                public ActionInfo(float time, Action action, bool unscaledTime)
                 {
                     this.time = time;
                     this.action = action;
+                    this.unscaledTime = unscaledTime;
                 }
             }
 
@@ -31,7 +33,7 @@ namespace Hertzole.HertzLib
             {
                 get
                 {
-                    if (!instance)
+                    if (!instance && !m_Destroying)
                     {
                         GameObject go = new GameObject("Delayed Action Manager");
                         instance = go.AddComponent<DelayedActionsBehaviour>();
@@ -74,7 +76,7 @@ namespace Hertzole.HertzLib
 
             public void OnLateUpdate()
 #else
-        private void LateUpdate()
+            private void LateUpdate()
 #endif
             {
                 // As long as this object isn't getting destroyed, run the check.
@@ -84,7 +86,7 @@ namespace Hertzole.HertzLib
                     for (int i = m_Actions.Count - 1; i >= 0; i--)
                     {
                         // If the time is over the action's time, invoke it and then remove it.
-                        if (Time.time >= m_Actions[i].time)
+                        if ((m_Actions[i].unscaledTime && Time.unscaledTime >= m_Actions[i].time) || (!m_Actions[i].unscaledTime && Time.time >= m_Actions[i].time))
                         {
                             m_Actions[i].action.Invoke();
                             m_Actions.RemoveAt(i);
@@ -98,11 +100,12 @@ namespace Hertzole.HertzLib
             /// </summary>
             /// <param name="action">The action you want to execute.</param>
             /// <param name="delay">The delay before the action is executed.</param>
-            public void ScheduleAction(Action action, float delay)
+            /// <param name="unscaledTime">If true, the timer will run, no matter the time scale.</param>
+            public void ScheduleAction(Action action, float delay, bool unscaledTime)
             {
                 // If the object isn't being destroyed, add the action.
                 if (!m_Destroying)
-                    Actions.Add(new ActionInfo(Time.time + delay, action));
+                    Actions.Add(new ActionInfo(Time.time + delay, action, unscaledTime));
             }
         }
 
@@ -111,7 +114,8 @@ namespace Hertzole.HertzLib
         /// </summary>
         /// <param name="action">The action you want to execute.</param>
         /// <param name="delay">The delay before the action is executed.</param>
-        public static void ScheduleAction(Action action, float delay)
+        /// <param name="unscaledTime">If true, the timer will run, no matter the time scale.</param>
+        public static void ScheduleAction(Action action, float delay, bool unscaledTime = false)
         {
             // Make sure delayed actions isn't being used in the editor.
             if (!Application.isPlaying)
@@ -122,7 +126,7 @@ namespace Hertzole.HertzLib
 
             // Schedule a new action on the instance.
             if (DelayedActionsBehaviour.Instance)
-                DelayedActionsBehaviour.Instance.ScheduleAction(action, delay);
+                DelayedActionsBehaviour.Instance.ScheduleAction(action, delay, unscaledTime);
         }
     }
 }

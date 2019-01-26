@@ -13,36 +13,52 @@ namespace Hertzole.HertzLib
     {
         [SerializeField]
         private int m_LayerID;
+        [System.Obsolete("No longer needs to be used. You can directly reference the layer like a normal int.")]
         public int LayerID { get { return m_LayerID; } set { m_LayerID = value; } }
+
+        public Layer(int layerId)
+        {
+            m_LayerID = layerId;
+        }
+
+        public static implicit operator int(Layer x)
+        {
+            return x.m_LayerID;
+        }
+
+        public static implicit operator Layer(int x)
+        {
+            return new Layer(x);
+        }
 
         public static bool operator ==(Layer x, Layer y)
         {
-            return x.LayerID == y.LayerID;
+            return x.m_LayerID == y.m_LayerID;
         }
 
         public static bool operator ==(Layer x, int y)
         {
-            return x.LayerID == y;
+            return x.m_LayerID == y;
         }
 
         public static bool operator ==(int x, Layer y)
         {
-            return x == y.LayerID;
+            return x == y.m_LayerID;
         }
 
         public static bool operator !=(Layer x, Layer y)
         {
-            return x.LayerID != y.LayerID;
+            return x.m_LayerID != y.m_LayerID;
         }
 
         public static bool operator !=(Layer x, int y)
         {
-            return x.LayerID != y;
+            return x.m_LayerID != y;
         }
 
         public static bool operator !=(int x, Layer y)
         {
-            return x != y.LayerID;
+            return x != y.m_LayerID;
         }
 
         public override bool Equals(object obj)
@@ -64,7 +80,7 @@ namespace Hertzole.HertzLib
 
         public override string ToString()
         {
-            return LayerMask.LayerToName(LayerID);
+            return LayerMask.LayerToName(m_LayerID);
         }
     }
 }

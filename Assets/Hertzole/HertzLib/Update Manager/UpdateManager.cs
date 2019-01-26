@@ -30,7 +30,7 @@ namespace Hertzole.HertzLib
             {
                 get
                 {
-                    if (!instance)
+                    if (!instance && !m_Destroying)
                     {
                         GameObject go = new GameObject("Update Manager");
                         instance = go.AddComponent<UpdateManagerBehaviour>();
