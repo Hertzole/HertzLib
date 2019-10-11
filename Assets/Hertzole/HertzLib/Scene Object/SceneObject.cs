@@ -2,23 +2,89 @@
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace Hertzole.HertzLib
 {
     [System.Serializable]
-    public class SceneObject
+    public struct SceneObject
     {
         [SerializeField]
-        private string m_SceneName;
+        [FormerlySerializedAs("m_SceneName")]
+        private string sceneName;
 
         public static implicit operator string(SceneObject sceneObject)
         {
-            return sceneObject.m_SceneName;
+            return sceneObject.sceneName;
         }
 
         public static implicit operator SceneObject(string sceneName)
         {
-            return new SceneObject() { m_SceneName = sceneName };
+            return new SceneObject() { sceneName = sceneName };
+        }
+
+        public static bool operator ==(string x, SceneObject y)
+        {
+            return x == y.sceneName;
+        }
+
+        public static bool operator ==(SceneObject x, string y)
+        {
+            return x.sceneName == y;
+        }
+
+        public static bool operator !=(string x, SceneObject y)
+        {
+            return x != y.sceneName;
+        }
+
+        public static bool operator !=(SceneObject x, string y)
+        {
+            return x.sceneName != y;
+        }
+
+        public static bool operator ==(Scene x, SceneObject y)
+        {
+            return x.name == y.sceneName;
+        }
+
+        public static bool operator ==(SceneObject x, Scene y)
+        {
+            return x.sceneName == y.name;
+        }
+
+        public static bool operator !=(Scene x, SceneObject y)
+        {
+            return x.name != y.sceneName;
+        }
+
+        public static bool operator !=(SceneObject x, Scene y)
+        {
+            return x.sceneName != y.name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is SceneObject sceneObj)
+            {
+                return sceneName == sceneObj.sceneName;
+            }
+            else if (obj is string sceneString)
+            {
+                return sceneName == sceneString;
+            }
+            else if (obj is Scene scene)
+            {
+                return sceneName == scene.name;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
@@ -32,7 +98,9 @@ namespace Hertzole.HertzLib.Editor
         protected SceneAsset GetSceneObject(string sceneObjectName)
         {
             if (string.IsNullOrEmpty(sceneObjectName))
+            {
                 return null;
+            }
 
             for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
             {
@@ -49,25 +117,25 @@ namespace Hertzole.HertzLib.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var sceneObj = GetSceneObject(property.FindPropertyRelative("m_SceneName").stringValue);
-            var newScene = EditorGUI.ObjectField(position, label, sceneObj, typeof(SceneAsset), false);
+            SceneAsset sceneObj = GetSceneObject(property.FindPropertyRelative("sceneName").stringValue);
+            Object newScene = EditorGUI.ObjectField(position, label, sceneObj, typeof(SceneAsset), false);
             if (newScene == null)
             {
-                var prop = property.FindPropertyRelative("m_SceneName");
+                SerializedProperty prop = property.FindPropertyRelative("sceneName");
                 prop.stringValue = "";
             }
             else
             {
-                if (newScene.name != property.FindPropertyRelative("m_SceneName").stringValue)
+                if (newScene.name != property.FindPropertyRelative("sceneName").stringValue)
                 {
-                    var scnObj = GetSceneObject(newScene.name);
+                    SceneAsset scnObj = GetSceneObject(newScene.name);
                     if (scnObj == null)
                     {
                         Debug.LogWarning("The scene " + newScene.name + " cannot be used. To use this scene add it to the build settings for the project.");
                     }
                     else
                     {
-                        var prop = property.FindPropertyRelative("m_SceneName");
+                        SerializedProperty prop = property.FindPropertyRelative("sceneName");
                         prop.stringValue = newScene.name;
                     }
                 }

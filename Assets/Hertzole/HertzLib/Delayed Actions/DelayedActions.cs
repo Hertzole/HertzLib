@@ -33,7 +33,7 @@ namespace Hertzole.HertzLib
             {
                 get
                 {
-                    if (!instance && !m_Destroying)
+                    if (!instance && !destroying)
                     {
                         GameObject go = new GameObject("Delayed Action Manager");
                         instance = go.AddComponent<DelayedActionsBehaviour>();
@@ -45,22 +45,22 @@ namespace Hertzole.HertzLib
             }
 
             // Sets if the object is in the process of being destroyed.
-            private static bool m_Destroying = false;
+            private static bool destroying = false;
 
             // All the actions.
-            private List<ActionInfo> m_Actions = new List<ActionInfo>();
-            private static List<ActionInfo> Actions { get { return Instance.m_Actions; } }
+            private List<ActionInfo> actions = new List<ActionInfo>();
+            private static List<ActionInfo> Actions { get { return Instance.actions; } }
 
             private void OnDestroy()
             {
                 // Mark the object as destroyed.
-                m_Destroying = true;
+                destroying = true;
             }
 
             private void OnApplicationQuit()
             {
                 // Mark the object as destroyed.
-                m_Destroying = true;
+                destroying = true;
             }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -80,16 +80,16 @@ namespace Hertzole.HertzLib
 #endif
             {
                 // As long as this object isn't getting destroyed, run the check.
-                if (!m_Destroying)
+                if (!destroying)
                 {
                     // Reverse loop through the actions.
-                    for (int i = m_Actions.Count - 1; i >= 0; i--)
+                    for (int i = actions.Count - 1; i >= 0; i--)
                     {
                         // If the time is over the action's time, invoke it and then remove it.
-                        if ((m_Actions[i].unscaledTime && Time.unscaledTime >= m_Actions[i].time) || (!m_Actions[i].unscaledTime && Time.time >= m_Actions[i].time))
+                        if ((actions[i].unscaledTime && Time.unscaledTime >= actions[i].time) || (!actions[i].unscaledTime && Time.time >= actions[i].time))
                         {
-                            m_Actions[i].action.Invoke();
-                            m_Actions.RemoveAt(i);
+                            actions[i].action.Invoke();
+                            actions.RemoveAt(i);
                         }
                     }
                 }
@@ -104,8 +104,10 @@ namespace Hertzole.HertzLib
             public void ScheduleAction(Action action, float delay, bool unscaledTime)
             {
                 // If the object isn't being destroyed, add the action.
-                if (!m_Destroying)
-                    Actions.Add(new ActionInfo(Time.time + delay, action, unscaledTime));
+                if (!destroying)
+                {
+                    Actions.Add(new ActionInfo((unscaledTime ? Time.unscaledTime : Time.time) + delay, action, unscaledTime));
+                }
             }
         }
 
@@ -126,7 +128,9 @@ namespace Hertzole.HertzLib
 
             // Schedule a new action on the instance.
             if (DelayedActionsBehaviour.Instance)
+            {
                 DelayedActionsBehaviour.Instance.ScheduleAction(action, delay, unscaledTime);
+            }
         }
     }
 }

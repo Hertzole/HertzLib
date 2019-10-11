@@ -10,7 +10,7 @@ namespace Hertzole.Hertzlib.Tests
     {
         public string testString = "Test";
         [SerializeField]
-        private string m_PrivateString;
+        private string privateString;
 
         private float testFloat;
         private int testInt;
@@ -21,10 +21,10 @@ namespace Hertzole.Hertzlib.Tests
         public RandomFloat randomFloat;
 
         [SerializeField]
-        private Layer m_LayerSelection;
+        private Layer layerSelection;
 
         [SerializeField]
-        private SceneObject m_GameScene;
+        private SceneObject gameScene = "";
 
         int[] numbers = new int[6] { 0, 1, 2, 3, 4, 5 };
         List<int> numberList = new List<int>(6) { 0, 1, 2, 3, 4, 5 };
@@ -48,11 +48,12 @@ namespace Hertzole.Hertzlib.Tests
             Vector2Int tilePosition = mousePosition.ToInt();
 
             string decmialNumbersString = "1234.45";
-            float result = decmialNumbersString.ParseFloat();
+            float result = decmialNumbersString.ParseFloatInvariant();
             Vector3 position = transform.position;
             if (position.IsNaN())
+            {
                 return;
-
+            }
 
             if (randomFloat == 1f)
             {
@@ -74,6 +75,11 @@ namespace Hertzole.Hertzlib.Tests
 
             }
 
+            if (gameObject.layer == layerSelection)
+            {
+            }
+            layerSelection = gameObject.layer;
+
             testInt = randomInt;
             testFloat = randomFloat;
 
@@ -85,8 +91,18 @@ namespace Hertzole.Hertzlib.Tests
             Vector3Int normalIntMultiply = Vector3Int.one * testInt;
             Vector3Int randomIntMultiply = Vector3Int.one * testInt;
 
-            if (false)
-                SceneManager.LoadScene(m_GameScene);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene(gameScene);
+            }
+
+            Time.timeScale = 0;
+
+            DelayedActions.ScheduleAction(() =>
+            {
+                Debug.Log("No timescale action!");
+                Time.timeScale = 1;
+            }, 5f, true);
 
             DelayedActions.ScheduleAction(() =>
             {
@@ -94,6 +110,10 @@ namespace Hertzole.Hertzlib.Tests
             }, 2);
 
             DelayedActions.ScheduleAction(DelayedFunction, 5);
+        }
+
+        private void Update()
+        {
         }
 
         private void DelayedFunction()

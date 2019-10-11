@@ -30,7 +30,7 @@ namespace Hertzole.HertzLib
             {
                 get
                 {
-                    if (!instance && !m_Destroying)
+                    if (!instance && !destroying)
                     {
                         GameObject go = new GameObject("Update Manager");
                         instance = go.AddComponent<UpdateManagerBehaviour>();
@@ -42,54 +42,60 @@ namespace Hertzole.HertzLib
             }
 
             // Sets if the object is in the process of being destroyed.
-            private static bool m_Destroying = false;
+            private static bool destroying = false;
 
-            private List<IFixedUpdate> m_FixedUpdateList = new List<IFixedUpdate>();
-            private static List<IFixedUpdate> FixedUpdateList { get { return Instance.m_FixedUpdateList; } set { Instance.m_FixedUpdateList = value; } }
-            private List<ILateUpdate> m_LateUpdateList = new List<ILateUpdate>();
-            private static List<ILateUpdate> LateUpdateList { get { return Instance.m_LateUpdateList; } set { Instance.m_LateUpdateList = value; } }
-            private List<IUpdate> m_UpdateList = new List<IUpdate>();
-            private static List<IUpdate> UpdateList { get { return Instance.m_UpdateList; } set { Instance.m_UpdateList = value; } }
+            private List<IFixedUpdate> fixedUpdateList = new List<IFixedUpdate>();
+            private static List<IFixedUpdate> FixedUpdateList { get { return Instance.fixedUpdateList; } set { Instance.fixedUpdateList = value; } }
+            private List<ILateUpdate> lateUpdateList = new List<ILateUpdate>();
+            private static List<ILateUpdate> LateUpdateList { get { return Instance.lateUpdateList; } set { Instance.lateUpdateList = value; } }
+            private List<IUpdate> updateList = new List<IUpdate>();
+            private static List<IUpdate> UpdateList { get { return Instance.updateList; } set { Instance.updateList = value; } }
 
             private void OnDestroy()
             {
                 // Mark the object as destroyed.
-                m_Destroying = true;
+                destroying = true;
             }
 
             private void OnApplicationQuit()
             {
                 // Mark the object as destroyed.
-                m_Destroying = true;
+                destroying = true;
             }
 
             // This function is called every fixed framerate frame, if the MonoBehaviour is enabled
             private void FixedUpdate()
             {
-                if (m_FixedUpdateList.Count > 0)
+                if (fixedUpdateList.Count > 0)
                 {
-                    for (int i = 0; i < m_FixedUpdateList.Count; i++)
-                        m_FixedUpdateList[i].OnFixedUpdate();
+                    for (int i = 0; i < fixedUpdateList.Count; i++)
+                    {
+                        fixedUpdateList[i].OnFixedUpdate();
+                    }
                 }
             }
 
             // LateUpdate is called every frame, if the Behaviour is enabled
             private void LateUpdate()
             {
-                if (m_LateUpdateList.Count > 0)
+                if (lateUpdateList.Count > 0)
                 {
-                    for (int i = 0; i < m_LateUpdateList.Count; i++)
-                        m_LateUpdateList[i].OnLateUpdate();
+                    for (int i = 0; i < lateUpdateList.Count; i++)
+                    {
+                        lateUpdateList[i].OnLateUpdate();
+                    }
                 }
             }
 
             // Update is called every frame, if the MonoBehaviour is enabled
             private void Update()
             {
-                if (m_UpdateList.Count > 0)
+                if (updateList.Count > 0)
                 {
-                    for (int i = 0; i < m_UpdateList.Count; i++)
-                        m_UpdateList[i].OnUpdate();
+                    for (int i = 0; i < updateList.Count; i++)
+                    {
+                        updateList[i].OnUpdate();
+                    }
                 }
             }
 
@@ -100,8 +106,10 @@ namespace Hertzole.HertzLib
             public void AddUpdate(IUpdate update)
             {
                 // Don't do anything if the object will be destroyed.
-                if (m_Destroying)
+                if (destroying)
+                {
                     return;
+                }
 
                 UpdateList.Add(update);
             }
@@ -113,8 +121,10 @@ namespace Hertzole.HertzLib
             public void RemoveUpdate(IUpdate update)
             {
                 // Don't do anything if the object will be destroyed.
-                if (m_Destroying)
+                if (destroying)
+                {
                     return;
+                }
 
                 UpdateList.Remove(update);
             }
@@ -126,8 +136,10 @@ namespace Hertzole.HertzLib
             public void AddFixedUpdate(IFixedUpdate update)
             {
                 // Don't do anything if the object will be destroyed.
-                if (m_Destroying)
+                if (destroying)
+                {
                     return;
+                }
 
                 FixedUpdateList.Add(update);
             }
@@ -139,8 +151,10 @@ namespace Hertzole.HertzLib
             public void RemoveFixedUpdate(IFixedUpdate update)
             {
                 // Don't do anything if the object will be destroyed.
-                if (m_Destroying)
+                if (destroying)
+                {
                     return;
+                }
 
                 FixedUpdateList.Remove(update);
             }
@@ -152,8 +166,10 @@ namespace Hertzole.HertzLib
             public void AddLateUpdate(ILateUpdate update)
             {
                 // Don't do anything if the object will be destroyed.
-                if (m_Destroying)
+                if (destroying)
+                {
                     return;
+                }
 
                 LateUpdateList.Add(update);
             }
@@ -165,8 +181,10 @@ namespace Hertzole.HertzLib
             public void RemoveLateUpdate(ILateUpdate update)
             {
                 // Don't do anything if the object will be destroyed.
-                if (m_Destroying)
+                if (destroying)
+                {
                     return;
+                }
 
                 LateUpdateList.Remove(update);
             }
@@ -187,7 +205,9 @@ namespace Hertzole.HertzLib
 
             // Add the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.AddUpdate(update);
+            }
         }
 
         /// <summary>
@@ -205,7 +225,9 @@ namespace Hertzole.HertzLib
 
             // Remove the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.RemoveUpdate(update);
+            }
         }
 
         /// <summary>
@@ -223,7 +245,9 @@ namespace Hertzole.HertzLib
 
             // Add the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.AddFixedUpdate(update);
+            }
         }
 
         /// <summary>
@@ -241,7 +265,9 @@ namespace Hertzole.HertzLib
 
             // Remove the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.RemoveFixedUpdate(update);
+            }
         }
 
         /// <summary>
@@ -259,7 +285,9 @@ namespace Hertzole.HertzLib
 
             // Add the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.AddLateUpdate(update);
+            }
         }
 
         /// <summary>
@@ -277,7 +305,9 @@ namespace Hertzole.HertzLib
 
             // Remove the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.RemoveLateUpdate(update);
+            }
         }
     }
 }

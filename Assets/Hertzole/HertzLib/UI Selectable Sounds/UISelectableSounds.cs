@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Hertzole.HertzLib
@@ -11,92 +12,107 @@ namespace Hertzole.HertzLib
     {
         [SerializeField]
         [Tooltip("If true, the sound will play from this Game Object. Else it will use a global audio source.")]
-        private bool m_PlayAudioOnThis = false;
+        [FormerlySerializedAs("m_PlayAudioOnThis")]
+        private bool playAudioOnThis = false;
 
 #if UNITY_EDITOR
         [Header("Sounds")]
 #endif
         [SerializeField]
         [Tooltip("The sound that plays when the cursor enters the selectable.")]
-        private AudioClip m_EnterSound = null;
+        [FormerlySerializedAs("m_EnterSound")]
+        private AudioClip enterSound = null;
         [SerializeField]
         [Tooltip("If true, the enter sound will play when the selectable isn't interactable.")]
-        private bool m_PlayEnterWhenDisabled = false;
+        [FormerlySerializedAs("m_PlayEnterWhenDisabled")]
+        private bool playEnterWhenDisabled = false;
         [SerializeField]
         [Tooltip("The sound that plays when the cursor exits the selectable.")]
-        private AudioClip m_ExitSound = null;
+        [FormerlySerializedAs("m_ExitSound")]
+        private AudioClip exitSound = null;
         [SerializeField]
         [Tooltip("If true, the exit sound will play when the selectable isn't interactable.")]
-        private bool m_PlayExitWhenDisabled = false;
+        [FormerlySerializedAs("m_PlayExitWhenDisabled")]
+        private bool playExitWhenDisabled = false;
         [SerializeField]
         [Tooltip("The sound that plays when the user presses the selectable.")]
-        private AudioClip m_ClickSound = null;
+        [FormerlySerializedAs("m_ClickSound")]
+        private AudioClip clickSound = null;
         [SerializeField]
         [Tooltip("The sound that plays when the user presses the selectable and it isn't interactable.")]
-        private AudioClip m_ClickDisabledSound = null;
+        [FormerlySerializedAs("m_ClickDisabledSound")]
+        private AudioClip clickDisabledSound = null;
 
 #if UNITY_EDITOR
         [Header("Audio Settings")]
 #endif
         [SerializeField]
         [Tooltip("The volume of the sound.")]
-        private float m_Volume = 1f;
+        [FormerlySerializedAs("m_Volume")]
+        private float volume = 1f;
         [SerializeField]
         [Tooltip("The pitch of the sound.")]
-        private float m_Pitch = 1f;
+        [FormerlySerializedAs("m_Pitch")]
+        private float pitch = 1f;
         [SerializeField]
         [Tooltip("The mixer group of the sound.")]
-        private AudioMixerGroup m_MixerGroup = null;
-
-        /// <summary> If true, the sound will play from this Game Object. Else it will use a global audio source. </summary>
-        public bool PlayAudioOnThis { get { return m_PlayAudioOnThis; } set { m_PlayAudioOnThis = value; OnPlayAudioOnThis(); } }
-        /// <summary> If true, the enter sound will play when the selectable isn't interactable. </summary>
-        public bool PlayEnterWhenDisabled { get { return m_PlayEnterWhenDisabled; } set { m_PlayEnterWhenDisabled = value; } }
-        /// <summary> If true, the exit sound will play when the selectable isn't interactable. </summary>
-        public bool PlayExitWhenDisabled { get { return m_PlayExitWhenDisabled; } set { m_PlayExitWhenDisabled = value; } }
-        /// <summary> The sound that plays when the cursor enters the selectable. </summary>
-        public AudioClip EnterSound { get { return m_EnterSound; } set { m_EnterSound = value; } }
-        /// <summary> The sound that plays when the cursor exits the selectable. </summary>
-        public AudioClip ExitSound { get { return m_ExitSound; } set { m_ExitSound = value; } }
-        /// <summary> The sound that plays when the user presses the selectable. </summary>
-        public AudioClip ClickSound { get { return m_ClickSound; } set { m_ClickSound = value; } }
-        /// <summary> The sound that plays when the user presses the selectable and it isn't interactable. </summary>
-        public AudioClip ClickDisabled { get { return m_ClickDisabledSound; } set { m_ClickDisabledSound = value; } }
-        /// <summary> The volume of the sound. </summary>
-        public float Volume { get { return m_Volume; } set { m_Volume = value; } }
-        /// <summary> The pitch of the sound. </summary>
-        public float Pitch { get { return m_Pitch; } set { m_Pitch = value; } }
-        /// <summary> The mixer group of the sound. </summary>
-        public AudioMixerGroup MixerGroup { get { return m_MixerGroup; } set { m_MixerGroup = value; } }
-
-        // The audio source on this object.
-        private AudioSource m_ThisAudioSource;
+        [FormerlySerializedAs("m_MixerGroup")]
+        private AudioMixerGroup mixerGroup = null;
 
         // The selectable on this object.
-        private Selectable m_Selectable;
+        [SerializeField]
+        [HideInInspector]
+        private Selectable selectable;
+
+        /// <summary> If true, the sound will play from this Game Object. Else it will use a global audio source. </summary>
+        public bool PlayAudioOnThis { get { return playAudioOnThis; } set { playAudioOnThis = value; OnPlayAudioOnThis(); } }
+        /// <summary> If true, the enter sound will play when the selectable isn't interactable. </summary>
+        public bool PlayEnterWhenDisabled { get { return playEnterWhenDisabled; } set { playEnterWhenDisabled = value; } }
+        /// <summary> If true, the exit sound will play when the selectable isn't interactable. </summary>
+        public bool PlayExitWhenDisabled { get { return playExitWhenDisabled; } set { playExitWhenDisabled = value; } }
+        /// <summary> The sound that plays when the cursor enters the selectable. </summary>
+        public AudioClip EnterSound { get { return enterSound; } set { enterSound = value; } }
+        /// <summary> The sound that plays when the cursor exits the selectable. </summary>
+        public AudioClip ExitSound { get { return exitSound; } set { exitSound = value; } }
+        /// <summary> The sound that plays when the user presses the selectable. </summary>
+        public AudioClip ClickSound { get { return clickSound; } set { clickSound = value; } }
+        /// <summary> The sound that plays when the user presses the selectable and it isn't interactable. </summary>
+        public AudioClip ClickDisabled { get { return clickDisabledSound; } set { clickDisabledSound = value; } }
+        /// <summary> The volume of the sound. </summary>
+        public float Volume { get { return volume; } set { volume = value; } }
+        /// <summary> The pitch of the sound. </summary>
+        public float Pitch { get { return pitch; } set { pitch = value; } }
+        /// <summary> The mixer group of the sound. </summary>
+        public AudioMixerGroup MixerGroup { get { return mixerGroup; } set { mixerGroup = value; } }
+
+        // The audio source on this object.
+        private AudioSource thisAudioSource;
 
         // The global audio source.
-        private static AudioSource s_GlobalSource;
+        private static AudioSource globalSource;
         private static AudioSource GlobalSource
         {
             get
             {
                 // If there's no global audio source, create it.
-                if (s_GlobalSource == null)
+                if (globalSource == null)
                 {
                     GameObject go = new GameObject("Global UI Sounds");
                     DontDestroyOnLoad(go);
-                    s_GlobalSource = go.AddComponent<AudioSource>();
+                    globalSource = go.AddComponent<AudioSource>();
                 }
 
-                return s_GlobalSource;
+                return globalSource;
             }
         }
 
         private void Awake()
         {
-            // Get the selectable.
-            m_Selectable = GetComponent<Selectable>();
+            // Get the selectable if required.
+            if (selectable == null)
+            {
+                selectable = GetComponent<Selectable>();
+            }
 
             // Set up the play audio on this if required.
             OnPlayAudioOnThis();
@@ -105,14 +121,16 @@ namespace Hertzole.HertzLib
         private void OnPlayAudioOnThis()
         {
             // If play on this is enabled, get the audio source, or add it.
-            if (m_PlayAudioOnThis)
+            if (playAudioOnThis)
             {
-                if (m_ThisAudioSource == null)
+                if (thisAudioSource == null)
                 {
-                    m_ThisAudioSource = GetComponent<AudioSource>();
+                    thisAudioSource = GetComponent<AudioSource>();
 
-                    if (m_ThisAudioSource == null)
-                        m_ThisAudioSource = gameObject.AddComponent<AudioSource>();
+                    if (thisAudioSource == null)
+                    {
+                        thisAudioSource = gameObject.AddComponent<AudioSource>();
+                    }
                 }
             }
         }
@@ -125,24 +143,26 @@ namespace Hertzole.HertzLib
         {
             // Stop if there's no sound clip.
             if (clip == null)
+            {
                 return;
+            }
 
             // If play on this is enabled, set all the values on this audio source.
             // Else set it on the global source.
-            if (m_PlayAudioOnThis)
+            if (playAudioOnThis)
             {
-                m_ThisAudioSource.volume = m_Volume;
-                m_ThisAudioSource.pitch = m_Pitch;
-                m_ThisAudioSource.outputAudioMixerGroup = m_MixerGroup;
+                thisAudioSource.volume = volume;
+                thisAudioSource.pitch = pitch;
+                thisAudioSource.outputAudioMixerGroup = mixerGroup;
 
-                m_ThisAudioSource.clip = clip;
-                m_ThisAudioSource.Play();
+                thisAudioSource.clip = clip;
+                thisAudioSource.Play();
             }
             else
             {
-                GlobalSource.volume = m_Volume;
-                GlobalSource.pitch = m_Pitch;
-                GlobalSource.outputAudioMixerGroup = m_MixerGroup;
+                GlobalSource.volume = volume;
+                GlobalSource.pitch = pitch;
+                GlobalSource.outputAudioMixerGroup = mixerGroup;
 
                 GlobalSource.clip = clip;
                 GlobalSource.Play();
@@ -156,41 +176,53 @@ namespace Hertzole.HertzLib
             {
                 // If it's interactable, play the normal sound.
                 // Else, play the disabled sound.
-                if (m_Selectable.interactable)
+                if (selectable.interactable)
                 {
-                    PlaySound(m_ClickSound);
+                    PlaySound(clickSound);
                 }
                 else
                 {
-                    PlaySound(m_ClickDisabledSound);
+                    PlaySound(clickDisabledSound);
                 }
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (m_Selectable.interactable || m_PlayExitWhenDisabled)
+            if (selectable.interactable || playExitWhenDisabled)
             {
-                PlaySound(m_ExitSound);
+                PlaySound(exitSound);
             }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (m_Selectable.interactable || m_PlayEnterWhenDisabled)
+            if (selectable.interactable || playEnterWhenDisabled)
             {
-                PlaySound(m_EnterSound);
+                PlaySound(enterSound);
             }
         }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
+            // Cache the selectable in the editor if possible.
+            if (selectable == null)
+            {
+                selectable = GetComponent<Selectable>();
+            }
+
             // Make sure to do the play audio on this setup if changed in the editor at runtime.
             if (Application.isPlaying)
             {
                 OnPlayAudioOnThis();
             }
+        }
+
+        private void Reset()
+        {
+            // Cache the selectable in the editor if possible.
+            selectable = GetComponent<Selectable>();
         }
 #endif
     }

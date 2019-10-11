@@ -14,7 +14,9 @@ namespace Hertzole.HertzLib
             T component = target.GetComponent<T>();
 
             if (component == null)
+            {
                 component = target.AddComponent<T>();
+            }
 
             return component;
         }
@@ -91,54 +93,86 @@ namespace Hertzole.HertzLib
             return new Vector3Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
         }
 
+        [System.Obsolete("Use 'TryFloatParseInvariant' instead.")]
+        public static bool TryFloatParse(this string s, out float result)
+        {
+            return s.TryFloatParseInvariant(out result);
+        }
+
         /// <summary>
         /// Tries to parse a string to a float with no culture.
         /// </summary>
-        public static bool TryFloatParse(this string s, out float result)
+        public static bool TryFloatParseInvariant(this string s, out float result)
         {
             return float.TryParse(s, NumberStyles.Float | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out result);
+        }
+
+        [System.Obsolete("Use 'ParseFloatInvariant' instead.")]
+        public static float ParseFloat(this string s)
+        {
+            return s.ParseFloatInvariant();
         }
 
         /// <summary>
         /// Parses a string to a float with no culture.
         /// </summary>
-        public static float ParseFloat(this string s)
+        public static float ParseFloatInvariant(this string s)
         {
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             if (string.IsNullOrWhiteSpace(s))
+            {
                 s = "0";
+            }
 #else
             if (string.IsNullOrEmpty(s.Trim()))
+            {
                 s = "0";
+            }
 #endif
 
             float val;
-            return s.TryFloatParse(out val) ? val : 0;
+            return s.TryFloatParseInvariant(out val) ? val : 0;
+        }
+
+        [System.Obsolete("Use 'TryParseIntInvariant' instead.")]
+        public static bool TryIntParse(this string s, out int result)
+        {
+            return s.TryIntParseInvariant(out result);
         }
 
         /// <summary>
         /// Tries to parse a string to a int with no culture.
         /// </summary>
-        public static bool TryIntParse(this string s, out int result)
+        public static bool TryIntParseInvariant(this string s, out int result)
         {
             return int.TryParse(s, NumberStyles.Float | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out result);
+        }
+
+        [System.Obsolete("Use 'ParseIntInvariant' instead.")]
+        public static int ParseInt(this string s)
+        {
+            return s.ParseIntInvariant();
         }
 
         /// <summary>
         /// Parses a string to a int with no culture.
         /// </summary>
-        public static int ParseInt(this string s)
+        public static int ParseIntInvariant(this string s)
         {
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             if (string.IsNullOrWhiteSpace(s))
+            {
                 s = "0";
+            }
 #else
             if (string.IsNullOrEmpty(s.Trim()))
+            {
                 s = "0";
+            }
 #endif
 
             int val;
-            return s.TryIntParse(out val) ? val : 0;
+            return s.TryIntParseInvariant(out val) ? val : 0;
         }
 
         /// <summary>

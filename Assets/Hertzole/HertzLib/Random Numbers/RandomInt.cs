@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,18 +10,20 @@ namespace Hertzole.HertzLib
     public struct RandomInt
     {
         [SerializeField]
-        private int m_Min;
-        public int Min { get { return m_Min; } set { m_Min = value; } }
+        [FormerlySerializedAs("m_Min")]
+        private int min;
+        public int Min { get { return min; } set { min = value; } }
         [SerializeField]
-        private int m_Max;
-        public int Max { get { return m_Max; } set { m_Max = value; } }
+        [FormerlySerializedAs("m_Max")]
+        private int max;
+        public int Max { get { return max; } set { max = value; } }
 
         public int Value { get { return Random.Range(Min, Max); } }
 
         public RandomInt(int min, int max)
         {
-            m_Min = min;
-            m_Max = max;
+            this.min = min;
+            this.max = max;
         }
 
         public static implicit operator int(RandomInt x)
@@ -192,9 +195,9 @@ namespace Hertzole.HertzLib.Editor
         {
             EditorGUI.LabelField(new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height), label);
             EditorGUI.PrefixLabel(new Rect(position.x + EditorGUIUtility.labelWidth, position.y, 25, position.height), new GUIContent("Min"));
-            EditorGUI.PropertyField(new Rect(position.x + EditorGUIUtility.labelWidth + 25, position.y, ((position.width - EditorGUIUtility.labelWidth) / 2) - 27, position.height), property.FindPropertyRelative("m_Min"), GUIContent.none);
+            EditorGUI.PropertyField(new Rect(position.x + EditorGUIUtility.labelWidth + 25, position.y, ((position.width - EditorGUIUtility.labelWidth) / 2) - 27, position.height), property.FindPropertyRelative("min"), GUIContent.none);
             EditorGUI.PrefixLabel(new Rect(position.x + EditorGUIUtility.labelWidth + ((position.width - EditorGUIUtility.labelWidth) / 2) + 2, position.y, 27, position.height), new GUIContent("Max"));
-            EditorGUI.PropertyField(new Rect(position.x + EditorGUIUtility.labelWidth + ((position.width - EditorGUIUtility.labelWidth) / 2) + 31, position.y, ((position.width - EditorGUIUtility.labelWidth) / 2) - 31, position.height), property.FindPropertyRelative("m_Max"), GUIContent.none);
+            EditorGUI.PropertyField(new Rect(position.x + EditorGUIUtility.labelWidth + ((position.width - EditorGUIUtility.labelWidth) / 2) + 31, position.y, ((position.width - EditorGUIUtility.labelWidth) / 2) - 31, position.height), property.FindPropertyRelative("max"), GUIContent.none);
         }
     }
 }

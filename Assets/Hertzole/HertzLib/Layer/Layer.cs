@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,18 +13,19 @@ namespace Hertzole.HertzLib
     public struct Layer
     {
         [SerializeField]
-        private int m_LayerID;
+        [FormerlySerializedAs("m_LayerID")]
+        private int layerID;
         [System.Obsolete("No longer needs to be used. You can directly reference the layer like a normal int.")]
-        public int LayerID { get { return m_LayerID; } set { m_LayerID = value; } }
+        public int LayerID { get { return layerID; } set { layerID = value; } }
 
         public Layer(int layerId)
         {
-            m_LayerID = layerId;
+            layerID = layerId;
         }
 
         public static implicit operator int(Layer x)
         {
-            return x.m_LayerID;
+            return x.layerID;
         }
 
         public static implicit operator Layer(int x)
@@ -33,32 +35,32 @@ namespace Hertzole.HertzLib
 
         public static bool operator ==(Layer x, Layer y)
         {
-            return x.m_LayerID == y.m_LayerID;
+            return x.layerID == y.layerID;
         }
 
         public static bool operator ==(Layer x, int y)
         {
-            return x.m_LayerID == y;
+            return x.layerID == y;
         }
 
         public static bool operator ==(int x, Layer y)
         {
-            return x == y.m_LayerID;
+            return x == y.layerID;
         }
 
         public static bool operator !=(Layer x, Layer y)
         {
-            return x.m_LayerID != y.m_LayerID;
+            return x.layerID != y.layerID;
         }
 
         public static bool operator !=(Layer x, int y)
         {
-            return x.m_LayerID != y;
+            return x.layerID != y;
         }
 
         public static bool operator !=(int x, Layer y)
         {
-            return x != y.m_LayerID;
+            return x != y.layerID;
         }
 
         public override bool Equals(object obj)
@@ -75,12 +77,12 @@ namespace Hertzole.HertzLib
 
         public override int GetHashCode()
         {
-            return m_LayerID;
+            return layerID;
         }
 
         public override string ToString()
         {
-            return LayerMask.LayerToName(m_LayerID);
+            return LayerMask.LayerToName(layerID);
         }
     }
 }
@@ -99,7 +101,7 @@ namespace Hertzole.HertzLib.Editor
             };
 
             GUIContent newLabel = new GUIContent(property.displayName, property.tooltip);
-            property.FindPropertyRelative("m_LayerID").intValue = EditorGUI.LayerField(position, newLabel, property.FindPropertyRelative("m_LayerID").intValue, labelStyle);
+            property.FindPropertyRelative("layerID").intValue = EditorGUI.LayerField(position, newLabel, property.FindPropertyRelative("layerID").intValue, labelStyle);
         }
     }
 }
