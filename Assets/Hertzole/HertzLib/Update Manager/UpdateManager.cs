@@ -32,7 +32,7 @@ namespace Hertzole.HertzLib
                 {
                     if (!instance && !destroying)
                     {
-                        GameObject go = new GameObject("Update Manager");
+                        GameObject go = new GameObject("HertzLib Update Manager");
                         instance = go.AddComponent<UpdateManagerBehaviour>();
                         DontDestroyOnLoad(go);
                     }
@@ -187,6 +187,11 @@ namespace Hertzole.HertzLib
                 }
 
                 LateUpdateList.Remove(update);
+            }
+
+            private void OnGUI()
+            {
+                GUILayout.Box("Updates: " + updateList.Count.ToString());
             }
         }
 
