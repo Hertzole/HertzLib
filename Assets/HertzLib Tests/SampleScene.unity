@@ -311,9 +311,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testString: Test
   privateString: 
-  testFloat: 0
-  testInt: 0
-  evenMorePrivateString: 
   randomInt:
     min: -10
     max: 10
@@ -324,8 +321,6 @@ MonoBehaviour:
     layerID: 0
   gameScene:
     sceneName: 
-  numbers: 000000000100000002000000030000000400000005000000
-  numberList: 000000000100000002000000030000000400000005000000
 --- !u!1 &555758193
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!102 &592866261
 TextMesh:
   serializedVersion: 3
@@ -1313,7 +1308,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1995729459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1419,7 +1414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2138935678
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -112,10 +112,6 @@ namespace Hertzole.Hertzlib.Tests
             DelayedActions.ScheduleAction(DelayedFunction, 5);
         }
 
-        private void Update()
-        {
-        }
-
         private void DelayedFunction()
         {
             Debug.Log("Hello world... after 5 seconds of wait!");

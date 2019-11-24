@@ -98,7 +98,7 @@ namespace Hertzole.HertzLib.Editor
                         {
                             if (realType.IsSubclassOf(typeof(MonoBehaviour)) && realType != typeof(UpdateManager) && realType != typeof(UpdateManager.UpdateManagerBehaviour))
                             {
-                                ProcessClass(module, type, "Update", "OnUpdate");
+                                ProcessClassOld(module, type, "Update", "OnUpdate");
                             }
                         }
                     }
@@ -141,7 +141,7 @@ namespace Hertzole.HertzLib.Editor
                     if (!hasEnableMethod && !hasDisableMethod)
                     {
                         method.Name = convertedUpdate;
-                        //method.IsPublic = true;
+                        method.IsPublic = true;
                     }
 
                     TypeDefinition updater = GetUpdater(type, module, updateInterface, method);
@@ -311,17 +311,35 @@ namespace Hertzole.HertzLib.Editor
                         Debug.Log(new InterfaceImplementation(updateInterface).InterfaceType);
                         //type.Interfaces.Add(new InterfaceImplementation(updateInterface));
                         type.Interfaces.Add(new InterfaceImplementation(updateInterface));
+
+                        //MethodDefinition testMethod = new MethodDefinition("TestInterfaceMethod", MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual, module.ImportReference(typeof(void)));
+                        //type.Methods.Add(testMethod);
+
+                        //#region Debug Message
+                        //MethodReference debugLog = module.ImportReference(typeof(Debug).GetMethod("Log", new Type[] { typeof(object) }));
+
+                        //ILProcessor ilProcessor = testMethod.Body.GetILProcessor();
+                        //ilProcessor.Emit(OpCodes.Nop);
+                        //ilProcessor.Emit(OpCodes.Ldstr, "Test Method");
+                        //ilProcessor.Emit(OpCodes.Call, debugLog);
+                        //ilProcessor.Emit(OpCodes.Nop);
+                        //ilProcessor.Emit(OpCodes.Ret);
+                        //#endregion
                     }
 
                     if (!hasEnableMethod && !hasDisableMethod)
                     {
                         method.Name = convertedUpdate;
                         method.IsPublic = true;
+                        method.IsFinal = true;
+                        method.IsHideBySig = true;
+                        method.IsNewSlot = true;
+                        method.IsVirtual = true;
                     }
 
                     if (!hasEnableMethod)
                     {
-                        enableMethod = new MethodDefinition("OnEnable", MethodAttributes.Private, module.ImportReference(typeof(void)));
+                        enableMethod = new MethodDefinition("OnEnable", MethodAttributes.Private | MethodAttributes.HideBySig, module.ImportReference(typeof(void)));
                         type.Methods.Add(enableMethod);
 
                         MethodReference addUpdateReference = module.ImportReference(typeof(UpdateManager).GetMethod("Add" + targetUpdate, new Type[] { typeof(IUpdate) }));
@@ -332,11 +350,22 @@ namespace Hertzole.HertzLib.Editor
                         ilProcessor.Append(Instruction.Create(OpCodes.Call, addUpdateReference));
                         ilProcessor.Emit(OpCodes.Nop);
                         ilProcessor.Emit(OpCodes.Ret);
+
+                        //#region Debug Message
+                        //MethodReference debugLog = module.ImportReference(typeof(Debug).GetMethod("Log", new Type[] { typeof(object) }));
+
+                        //ILProcessor ilProcessor = enableMethod.Body.GetILProcessor();
+                        //ilProcessor.Emit(OpCodes.Nop);
+                        //ilProcessor.Emit(OpCodes.Ldstr, "Rotator A enable");
+                        //ilProcessor.Emit(OpCodes.Call, debugLog);
+                        //ilProcessor.Emit(OpCodes.Nop);
+                        //ilProcessor.Emit(OpCodes.Ret);
+                        //#endregion
                     }
 
                     if (!hasDisableMethod)
                     {
-                        disableMethod = new MethodDefinition("OnDisable", MethodAttributes.Private, module.ImportReference(typeof(void)));
+                        disableMethod = new MethodDefinition("OnDisables", MethodAttributes.Private | MethodAttributes.HideBySig, module.ImportReference(typeof(void)));
                         type.Methods.Add(disableMethod);
 
                         MethodReference removeUpdateReference = module.ImportReference(typeof(UpdateManager).GetMethod("Remove" + targetUpdate, new Type[] { typeof(IUpdate) }));
